@@ -1,0 +1,238 @@
+1.Intiatlizing spring boot
+    we can easily initailize spring boot from spring intializer website by selecting the required dependencies and java versions
+
+2.Opening spring application
+    open the spring application by selecting the pom.xml file in ide
+
+3.Learn About REST Api from OOOOtube
+
+4.creating api's:to create api we need a class for creating apis with the annotation of @Requestcontroller
+    1.get Api: we create get api function by creating @Getparameter annotation by passing api name as parameter
+          @GetMapping("/hi")
+            public String sayHi(){
+                return "Voilaa we runned our api";
+            }
+
+        I. Creating get api based on params:
+                1.Using query parameter
+                    Ex://https:localhost:8080/search?q=mavin   ------> ?q=mavin is called the query param
+                        @GetMapping("/search")
+                        public String searchApi(@RequestParam String q){
+                            DataBase db = new DataBase();
+                            return db.check(q);
+                        }
+
+                2.Using Path Parameter
+                    Ex:
+                         //https:localhost:8080/users/mavin -------------> /mavin  is the path parameter given to the user
+                            @GetMapping("/users/{id}")
+                            public UserData getOneUser(@PathVariable int id){
+                                return db.getOneUser(id);
+                            }
+
+
+5.Best Part with the spring boot is it automatically generates the Object data into json automatically
+    ex:if my api returning List<UserData> then it shows the data in UserData class in json
+       like this: [
+          {
+            "id": 1,
+            "name": "mavin",
+            "age": 20
+          },
+          {
+            "id": 2,
+            "name": "manikanta",
+            "age": 30
+          }
+        ]
+
+6.Older version of writing api's in springboot:-
+    in older way api written using Requesr mapping
+    syntax:-
+        @RequestMapping(path = "/hello",method = RequestMethod.GET)
+            public String hello(){
+                return "helloooooooooooo";
+            }
+        we have to specify the Request method like post get delete etc..
+        default will be get method
+
+7.Producers and consumers:-
+    Producers and consumers is used to restrict the type of data coming from the web and send from server
+
+8.Maven:-
+    mavin is the build tool for java application which take care of installing dependencies and make them work like npm for js
+
+   How maven Work:-
+        as all build tools maven works based on repositories
+        1.it acutally contains three reposotiries
+            i.local repository ii. global repo. iii. remote repo.
+            whenever u tried to install a dependency to your code maven look in your local repository that store in your system
+            else it makes the network call to global repo to install dependecies
+            remote repository is like buliding website only for specific people like the private repository in github
+
+        you can check your local repo in C:\Users\nanin\.m2\repository
+
+9.installing dependencies in  maven:
+    we can add dependencies using groupId artifactId of dependency which actually present in central rep. of maven
+     <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>3.0.4</version>
+            </dependency>
+        </dependencies>
+
+
+10.Structure of maven application:-
+    it contains one pom.xml file tells about all the dependencies etc.
+    contaun a main folder in which all java files are stored
+    it contains a life cycle method through that we can package our file into a jar file and deploy on to server.
+
+
+11.Life Cycle in maven:-
+
+    it conatins clean(check for errors)-->validate(look for standerds)-->compile(compiling into byte code)--->test(testing the test cases)--->package(package our file into jar file creating target folder)-->install(installing all the dependencies into local repo.) -->deploy(deploying into production server);
+
+12.when you done packaging java application it automatically does all the above phases
+
+13.MultiThreading Java:- acheived by using a class extended by the Thread class and also by implementing runnable interface then pass into constructor of thread class
+
+    when new thread has to start then we need to override the run method in child class from thread class
+
+    then call the start method in main thread then it can be acheived
+
+    if we call the run method in main method we didnt obtain MT because run method calls only in main thread. run method refers to which thread it called.
+
+14.MT depending upon the No of cores and threads in our cpu if the threads are more than in our cores then JVM puts the execution in Thread Queue.
+
+15.Concurrency and parellism
+    concurrency:- Concurrency is when two or more tasks can start, run, and complete in overlapping time periods. It doesn't necessarily mean they'll ever both be running at the same instant. For example, multitasking on a single-core machine.
+    parallelism:-Parallelism is when tasks literally run at the same time, e.g., on a multicore processor.
+
+16.Deamon Thread:- it is a background thread in java when the deamon thread is running the main method doesn't care about the process finish from the thread is done it stopped when needed
+    we cant set our main thread as deamon because to execute the program has to depend on one thread.
+
+    syntax:- thread.setDaemon(true);
+
+17.whenever we get exception to stop the thread we can use thread.intrept() to stop the execution of thread
+
+18.Jstack (Present in JDK) it gives the information about threads which are running to get the file syntax is
+
+    jstack PID > filename.txt
+
+    PID(process id) can be obtain from taskmanager in windows and go to details then run your application then select PID
+
+    we cant easily understand thread dump there are many online tools go and paste to analyze
+
+19.Sleeping the thread:- we can sleep our thread using Thread.sleep() -> Thread refer to current thread executing.
+
+20.IOC:- IOC refers to inversion of control that means you are giving the access of instanciating and mainating the objects in our application to some other thing called IOC Container
+
+21.IOC Container:- Spring Ioc container is  the thing responsible for creating the object by registering in it.
+                    it works like when you run your application it loads WebApplicationContext which scans all the Beans and Component annotation you registerd and allocate memory to it.
+
+22.Dependency Injection :- Dependency injection is the thing injecting some code your class when it needed. it was done using @AutoWired Annotatiom
+
+23.Beans :- Beans are nothing but a objects which are used register our Class in IOC Container it is method level annotation so we need to create a class with @configuration and there we need to create all beans
+
+    Ex:-@Configuration
+        public class ConfigClass {
+            @Bean
+        //    @Scope("prototype")
+            public BeanClass BeanclassObj(){
+                return new BeanClass();
+            }
+        }
+
+     @Scope represents the creating the reference of object when you dont specify any scope it was singleton that means when ever you Inject any dependecy it points to same referce
+     if  @Scope("prototype") then create the new reference when the object is needed.
+
+24.application.properties used to define the proporties like jdbc url etc like process.env
+    1.to look the properties remember any one property and click ctrl+shift+f to search in all files and use requires properties
+    2.ex:-spring.datasource.url = jdbc:mysql://localhost:3306/crud
+          spring.datasource.username = root
+          spring.datasource.password = Admin@2814
+
+
+25. to test any part of code we have CommandLineRunner interface which contains a run method to over ride which basically at main method when we run the main sB application
+    it mostly used to delete temp file etc.
+
+26.We need to mention our primary key with @Id annotation
+
+27.In application.properties we need to specify the spring.jpa.hibernate.ddl-auto property because it tells the hybernate to create or update or delete data in tables
+    Ex:-spring.jpa.hibernate.ddl-auto = create
+        **delete all existing data in table and create new row;
+
+        spring.jpa.hibernate.ddl-auto = update
+         **update the table by inserting new data;
+
+
+26.How can we use JpaRepository.
+    **By Creating a Interface which extends the JpaRepository Interface.
+    **So it actually a interface which extending the interface so we dont need to implement those methods
+    **it actually used to extra queries for our req.
+
+27.How the IOC Container picks the implentimentation eventhough we dont specified as bean?
+
+    **this is done by annotation called @Norepository and @Repository
+    **@NoRepository annotation tells ioc that the class which implements the @Norepository interface contain @Repository interface which Internally Implemented with @Component annotation
+    so that IOC Contaier picked up as bean;
+    **so that when i need to call function in Repository which implements JpaRepository which contain @Norepository annotation calls the methods from @repository anno class.
+
+    Example:-
+    @NoRepositoryBean
+    public interface JpaRepository<T, ID> extends ListCrudRepository<T, ID>, ListPagingAndSortingRepository<T, ID>, QueryByExampleExecutor<T> {
+        void flush();
+        // other methods
+
+    }
+
+    @Repository
+    @Transactional(
+        readOnly = true
+    )
+    public class SimpleJpaRepository<T, ID> implements JpaRepositoryImplementation<T, ID> {
+        private static final String ID_MUST_NOT_BE_NULL = "The given id must not be null";
+     }
+
+28. JpaRepository used for mysql db's and CRUDInterface uses for Nosql db's
+
+29.Annotations:-1.@Tareget this annotation tells compiler for which the annotation need to be give(Ex:- Method,Annotation etc);
+                2.@Retention this annotation tells compiler at which time the error should be check
+                 @Target(ElementType.METHOD)
+                 @Retention(RetentionPolicy.SOURCE)
+                 public @interface Override {
+                 }
+
+30.when you specify the a model class as entity class the hibernate tries to create the object using defaul constructor for that thing because that not the bean
+    so that we need to specify the default constructor when ever your create a model class
+
+31.Creating Custom Queries in our app:-
+    to find the elements in db we can use findBy method which written like findBy<Property Name present in Model class> then it find the all the rows with that Property name
+    if it not present in that then it gives error
+
+    Ex:-public List<BookModel> findByAuthor(String author);
+
+
+32.To get rid of errors for Property not present in Model class we need to write custom query using @Query annotation
+
+33.Writing Custom Queries in JPA:-
+    it can be written in two ways:-
+    1.JPQL:- java persistion Query Language
+    2.Native Sql Query
+
+    IN JPQL We need to write query as  the Property name to search in db whereas in the Native Sql query we need to write as column name to search
+
+    because jpa maps our model to db.
+
+    Sytax for JPQL:-
+        @Query("select b from BookModel b where b.name =:name ")
+        public List<BookModel> findByNameOfBook(String name);
+
+    Syntax for native sql query ex:-
+        @Query(value = "select * from book_model b  where b.author=:author" , nativeQuery = true)
+        public List<BookModel> findByAuthorName(String author);
+
+34.@Table annotation use to give user defined name to table and @Column annotation used to defined user defined column name to property
+
+35. to AutoIncrement the id we have annotation called
